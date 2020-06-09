@@ -52,6 +52,7 @@ start_date = datetime.datetime.strptime(start, '%m/%d/%Y')
 future_dates = []
 for i in range(len(future_predict)):
     future_dates.append((start_date + datetime.timedelta(days=i)).strftime('%m/%d/%Y'))
+
 ## now applying train test
 svc_model=SVC()
 X_train,X_test,y_train,y_test=train_test_split(days_since_1_22,cases, test_size=0.15)
@@ -74,8 +75,6 @@ svm_search.fit(X_train_confirmed, y_train_confirmed)
 svm_search.best_params_
 svm_confirmed = svm_search.best_estimator_
 y_pred_confirmed = svm_confirmed.predict(X_test_confirmed)
-# plt.plot(X_test_confirmed,y_pred_confirmed)
-# plt.plot(X_test_confirmed,y_test_confirmed)
 
 #for recovered
 # =============================================================================
@@ -86,9 +85,6 @@ svm_search.fit(X_train_recovered, y_train_recovered)
 svm_search.best_params_
 svm_recovered = svm_search.best_estimator_
 y_pred_recovered = svm_recovered.predict(X_test_recovered)
-# plt.plot(X_test_recovered,y_pred_recovered)
-# plt.plot(X_test_recovered,y_test_recovered)
-
 
 #for deaths
 X_train_deaths, X_test_deaths, y_train_deaths, y_test_deaths = train_test_split(days_since_1_22, cases, test_size=0.15, shuffle=False)
@@ -98,26 +94,19 @@ svm_search.fit(X_train_deaths, y_train_deaths)
 svm_search.best_params_
 svm_deaths = svm_search.best_estimator_
 y_pred_deaths = svm_deaths.predict(X_test_deaths)
-#plt.plot(X_test_deaths,y_pred_deaths)
-#plt.plot(X_test_deaths,y_test_deaths)
 
 y_pred_future=svm_confirmed.predict(future_predict)
 svm_pred=svm_confirmed.predict(future_predict)
 svm_test_pred=svm_confirmed.predict(X_test_confirmed)
-#plt.plot(future_predict,y_pred_future)
+plt.plot(future_predict,y_pred_future)
 
 y_pred_future=svm_recovered.predict(future_predict)
 svm_pred=svm_recovered.predict(future_predict)
 svm_test_pred=svm_recovered.predict(X_test_recovered)
-#plt.plot(future_predict,y_pred_future)
+plt.plot(future_predict,y_pred_future)
 
 
 y_pred_future=svm_deaths.predict(future_predict)
 svm_pred=svm_deaths.predict(future_predict)
 svm_test_pred=svm_deaths.predict(X_test_deaths)
 plt.plot(future_predict,y_pred_future)
-
-y_pred_future=svm_confirmed.predict(future_predict)
-svm_pred=svm_confirmed.predict(future_predict)
-svm_test_pred=svm_confirmed.predict(X_test_confirmed)
-#plt.plot(future_predict,y_pred_future)
